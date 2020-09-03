@@ -1,0 +1,111 @@
+﻿@model Patisserie.Models.Account
+@using Patisserie.Controllers
+
+@{
+    ViewBag.Title = "Create a new account";
+}
+
+<div class="row justify-content-between">
+    <h1 class="my-4">@ViewBag.Title</h1>
+    <span class="col-4 d-flex flex-row-reverse align-items-center">
+        @Html.ActionLink("Back to Accounts List", "Index", null, new { @class = "btn btn-outline-secondary" })
+    </span>
+</div>
+<hr class="accessory" />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @if (Utl.IsAdmin(Session))
+        {
+            <div class="form-group form-row">
+                @Html.LabelFor(model => model.IsModerator, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        <span class="badge badge-pill badge-danger is-moderator-badge">
+                            @Html.EditorFor(model => model.IsModerator)
+                            <label for="IsModerator" class="is-moderator">Admin</label>
+                        </span>
+                        @Html.ValidationMessageFor(model => model.IsModerator, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        }
+
+    <div class="form-group form-row">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        @if (ViewBag.isEmailInDB != null && ViewBag.isEmailInDB == true)
+        {
+            <div class="text-danger offset-2 col-8">
+                Email is already in use.
+            </div>
+        }
+    </div>
+
+        <div class="form-group form-row">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group form-row">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group form-row">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group form-row">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (Utl.IsAdmin(Session))
+{
+    <script type="text/javascript">
+        const badge = $('.is-moderator-badge');
+        const text = $('.is-moderator');
+        const checkbox = $('#IsModerator');
+
+        const showBadge = function () {
+            if (checkbox.is(":checked")) {
+                text.text('Admin');
+                badge.removeClass('badge-light');
+                badge.addClass('badge-danger');
+            } else {
+                text.text('Customer');
+                badge.removeClass('badge-danger');
+                badge.addClass('badge-light');
+            }
+        }
+
+        showBadge();
+        checkbox.click(showBadge);
+    </script>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

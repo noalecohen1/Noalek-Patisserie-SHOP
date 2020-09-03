@@ -1,0 +1,127 @@
+﻿<div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="RegisterLabel" aria-hidden="true">
+    <div class="modal-dialog login" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="register-title">Register</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user text-info"></i></span>
+                        </div>
+                        <input type="email" class="form-control" name="Email" placeholder="Email address">
+
+                        <div class="alert alert-danger col-12" id="bad-email" role="alert">
+                        </div>
+                    </div>
+                    <span class="help-block"></span>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-lock text-info"></i></span>
+                        </div>
+                        <input type="password" class="form-control" name="Password" placeholder="Password">
+
+                        <div class="alert alert-danger col-12" id="bad-password" role="alert">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-home text-info"></i></span>
+                        </div>
+                        <input type="text" class="form-control" name="Address" placeholder="Address">
+
+                        <div class="alert alert-danger col-12" id="bad-address" role="alert">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-phone text-info"></i></span>
+                        </div>
+                        <input type="text" class="form-control" name="PhoneNumber" placeholder="Phone number">
+
+                        <div class="alert alert-danger col-12" id="bad-phone" role="alert">
+                        </div>
+                    </div>
+
+                    <div class="alert alert-danger col-12" id="alert-register" role="alert">
+                        Couldn't register.
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-lg btn-primary btn-block mt-3" id="register-btn" type="submit">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.alert').hide()
+    $('#register-btn').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const email = $('input[name="Email"]');
+        const password = $('input[name="Password"]');
+        const address = $('input[name="Address"]');
+        const phoneNumber = $('input[name="PhoneNumber"]');
+
+        function clearRegisterFields() {
+            email.val('');
+            password.val('');
+            address.val('');
+            phoneNumber.val('');
+            email.select();
+        }
+
+        function printRegisterErrors(data) {
+            clearRegisterFields();
+
+            $emailMsg = data.find(e => e.email);
+            $passwordMsg = data.find(e => e.password);
+            $addressMsg = data.find(e => e.address);
+            $phoneMsg = data.find(e => e.phoneNumber);
+
+            if ($emailMsg) {
+                $('#bad-email').show()
+                $('#bad-email').text($emailMsg.email);
+            }
+            if ($passwordMsg) {
+                $('#bad-password').show()
+                $('#bad-password').text($passwordMsg.password);
+            }
+            if ($addressMsg) {
+                $('#bad-address').show()
+                $('#bad-address').text($addressMsg.address);
+            }
+            if ($phoneMsg) {
+                $('#bad-phone').show()
+                $('#bad-phone').text($phoneMsg.phoneNumber);
+            }
+        }
+
+
+        $.post('/Accounts/Register', { email: email.val(), password: password.val(), address: address.val(), phoneNumber: phoneNumber.val() })
+            .done(function (data) {
+                $('.alert').hide();
+                if (!Array.isArray(data)) document.write(data);
+                else printRegisterErrors(data);
+            })
+            .fail(function (e) {
+                console.log(e);
+
+                printRegisterErrors(e);
+                $('#alert-register').show();
+            });
+
+    });
+
+</script>

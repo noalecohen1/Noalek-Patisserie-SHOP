@@ -1,0 +1,20 @@
+﻿@model Patisserie.Models.Category
+
+<div class="col-12 col-md-3 card promoting-card px-0 category-card">
+    <a href="/Categories/Details/@Html.DisplayFor(modelItem => Model.CategoryID)" class="category-link">
+        <img src="~/Media/Images/@Model.ImagePath" alt="@Model.Name" class="card-img card-img-top category-img" />
+        <div class="card-body">
+            <h2 class="card-title">@Model.Name</h2>
+        </div>
+    </a>
+    @if (Patisserie.Controllers.Utl.IsAdmin(Session))
+    {
+        <div class="card-footer d-flex justify-content-around flex-row category-footer">
+            @Html.ActionLink("Edit", "Edit", "Categories", new { id = Model.CategoryID }, new { @class = "btn btn-outline-secondary" })
+            <button class="btn btn-outline-danger btn-delete"
+                    data-name="@Model.Name" data-id="@Model.CategoryID">
+                Delete
+            </button>
+        </div>
+    }
+</div>

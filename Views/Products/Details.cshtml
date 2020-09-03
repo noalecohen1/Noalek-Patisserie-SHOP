@@ -1,0 +1,121 @@
+﻿@model Patisserie.Models.Product
+@using Patisserie.Models
+
+@{
+    ViewBag.Title = "Details";
+    string backText = "Back to " + ViewBag.CategoryName;
+}
+<div class="row justify-content-between product-title mt-5">
+    <h1>@Html.DisplayFor(model => model.Name)</h1>
+    <span>
+        @if (Patisserie.Controllers.Utl.IsAdmin(Session))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }, new { @class = "btn btn-primary" })
+            <button class="btn btn-danger btn-delete"
+                    data-name="@Model.Name" data-id="@Model.ProductID">
+                Delete
+            </button>
+        }
+        @Html.ActionLink(backText, "Details", "Categories", new { id = Model.CategoryID }, new { @class = "btn btn-outline-secondary" })
+    </span>
+</div>
+
+<hr class="accessory" />
+
+<main class="wrapper">
+    <div class="single-product-area mt-80 mb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="product-details-large">
+                        <img class="product-zoom" alt="12. Aliexpress dropshipping by oberlo" src="@Html.DisplayFor(model => model.ImagePath)">
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="single-product-content">
+                        <form method="post" action="/Orders/AddItem" enctype="multipart/form-data">
+                            <div class="product-details">
+                                <div class="row justify-content-between">
+                                    @if (Patisserie.Controllers.Utl.IsLoggedIn(Session))
+                                    {
+                                        <div class="single-product-action col">
+                                            <div class="product-add-to-cart">
+                                                <span class="control-label">Quantity</span>
+                                                <div class="cart-plus-minus">
+                                                    <input type="hidden" name="productID" value="@Model.ProductID" />
+                                                    <input type="hidden" name="accountID" value="@Session["accountID"]" />
+                                                    <input class="product-quantity" style="width: 70px;" type="number" min="1" name="Amount" value="1">
+                                                </div>
+                                                <div class="add">
+                                                    <button type="submit" class="btn btn-success">
+                                                        <i class="fas fa-shopping-bag"></i>
+                                                        <span class="list-cart-title cart-title">Add to cart</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    <h3 class="col-2">
+                                        <span class="money badge badge-warning text-white">$@Html.DisplayFor(model => model.Price)</span>
+                                    </h3>
+                                </div>
+                                <hr />
+                                <h6>
+                                    @if (Model.IsDairy)
+                                    {
+                                        <span class="badge badge-pill badge-light">Dairy</span>
+                                    }
+                                    @if (Model.IsGlutenFree)
+                                    {
+                                        <span class="badge badge-pill badge-info">Gluten-free</span>
+                                    }
+                                    @if (Model.IsVegan)
+                                    {
+                                        <span class="badge badge-pill badge-success">Vegan</span>
+                                    }
+                                </h6>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="product-info">@Html.DisplayFor(model => model.Description)</div>
+                <section>
+                    <header>
+                        <hr />
+                        <h2>You may also like:</h2>
+                    </header>
+                    <div class="row justify-content-around">
+                        @foreach (Product product in ViewBag.Preferences)
+                        {
+                            @Html.Partial("_ProductCard", product)
+                        }
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+@if (Patisserie.Controllers.Utl.IsAdmin(Session))
+{
+    @Html.Partial("_DeleteModal", null, new ViewDataDictionary { { "title", "name" }, { "category", "Products" } })
+}
+
+<script type="text/javascript">
+    $(function () {
+        $(".add-item-btn").click(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            $id = $(this).data("id");
+            $name = $(this).data("name");
+            $description = $(this).data("description");
+            $price = $(this).data("price");
+            $image = $(this).data("image");
+
+            addOneProduct($id, $name, $description, $price, $image);
+        });
+    });
+</script>
+

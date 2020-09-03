@@ -1,0 +1,57 @@
+﻿@using Patisserie.Controllers
+
+@{
+    object accountID;
+    object antiForgeryToken;
+    if (Utl.IsLoggedIn(Session))
+    {
+        accountID = Session["accountID"];
+        antiForgeryToken = "'" + Html.AntiForgeryToken() + "'";
+    }
+    else
+    {
+        accountID = "''";
+        antiForgeryToken = "''";
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Noalek</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/774593af2e.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css" rel="stylesheet" type="text/css" media="all" />
+    @Styles.Render("~/Content/css")
+    <script src='@System.Web.Optimization.Scripts.RenderFormat("{0}","~/bundles/jquery")' type="text/javascript"></script>
+    <script src='@System.Web.Optimization.Scripts.RenderFormat("{0}","~/bundles/bootstrap")' type="text/javascript" defer></script>
+    <script src='@System.Web.Optimization.Scripts.RenderFormat("{0}","~/bundles/modernizr")' type="text/javascript" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js" type="text/javascript" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js" type="text/javascript" defer></script>
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        const accountID = @Html.Raw(accountID);
+        const antiForgeryToken = @Html.Raw(antiForgeryToken);
+    </script>
+</head>
+<body>
+    @Html.Partial("_Navbar")
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    @Html.Action("Index", "Footer")
+
+    @if (Utl.IsLoggedIn(Session)) { 
+        @Html.Partial("_CartModal")
+    }
+
+    @Html.Partial("_ContactModal")
+
+    <!-- Facebook API - Scripts -->
+    <script type="text/javascript" src="/Scripts/facebook.js"></script>
+</body>
+</html>
+
+

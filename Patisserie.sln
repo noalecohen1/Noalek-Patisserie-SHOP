@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patisserie", "Patisserie.csproj", "{D92613ED-E98F-4786-B2EE-7D30F1877C2F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D92613ED-E98F-4786-B2EE-7D30F1877C2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D92613ED-E98F-4786-B2EE-7D30F1877C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D92613ED-E98F-4786-B2EE-7D30F1877C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D92613ED-E98F-4786-B2EE-7D30F1877C2F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {97DE434D-7E0A-4D89-8E3D-97A2A7809076}
+	EndGlobalSection
+EndGlobal

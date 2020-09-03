@@ -1,0 +1,43 @@
+﻿@model List<Patisserie.Models.Branch>
+
+<footer class="footer mt-5 p-2 bg-primary">
+    <div class="container">
+        <div class="row justify-content-between pt-3">
+            <div class="details col-6">
+                <h3>Branches</h3>
+                <ul class="p-0">
+                    <form>
+                        @foreach(Patisserie.Models.Branch branch in Model)
+                        {
+                        <div class="form-check p-0">
+                            <input class="form-check-input branch-input" type="radio" 
+                                   name="@branch.Name" id="branch-@branch.BranchID" value="@branch.Address">
+                            <label class="form-check-label branch-label" for="branch-@branch.BranchID">
+                                @branch.Name | @branch.PhoneNumber | @branch.Address
+                            </label>
+                        </div>
+                        }
+                    </form>
+                </ul>
+            </div>
+            
+            @Html.Partial("_Map", "Map")
+        </div>
+
+        <p>&copy; @DateTime.Now.Year - Saar Davidson, Noa Cohen, Iris Kella, Nikol Arazi</p>
+    </div>
+</footer>
+
+<script>
+    $map = $('#gmap_canvas-Map');
+    $branchesInput = $('.branch-input');
+
+    $map.attr("src", "https://maps.google.com/maps?q=@Model.First().Address&t=&z=13&ie=UTF8&iwloc=&output=embed")
+    $branchesInput.first().prop("checked", true);
+
+    $branchesInput.click(function () {
+        $branchesInput.prop("checked", false);
+        $(this).prop("checked", true);
+        $map.attr("src", 'https://maps.google.com/maps?q=' + $(this).val() + '&t=&z=13&ie=UTF8&iwloc=&output=embed');
+    });
+</script>

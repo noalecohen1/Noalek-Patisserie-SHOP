@@ -1,0 +1,79 @@
+﻿@model List<Patisserie.Models.Product>
+@using Patisserie.Controllers
+
+@{
+    ViewBag.Title = "Category details";
+    string editTitle = "Edit " + ViewBag.Category.Name;
+}
+
+<div class="row justify-content-between">
+    <h1 class="col my-4">
+        @ViewBag.Category.Name
+    </h1>
+    <span class="col-4 d-flex flex-row-reverse align-items-center">
+        @if (Patisserie.Controllers.Utl.IsAdmin(Session))
+        {
+            @Html.ActionLink(editTitle, "Edit", new { id = ViewBag.Category.CategoryID }, new { @class = "btn btn-outline-primary ml-2" })
+        }
+        @Html.ActionLink("Back to Categories List", "Index", null, new { @class = "btn btn-outline-secondary" })
+    </span>
+</div>
+
+<hr class="accessory" />
+
+@* Added *@
+<div class="row mb-3">
+    <h4>Sort by:</h4>
+    <select onchange="Sort(this.value)">
+        <option selected value="0">Popularity</option>
+        <option value="1">Price (low to high)</option>
+        <option value="2">Price (high to low)</option>
+    </select>
+</div>
+
+
+<div>
+    <div class="container">
+        <div id="products-container" class="row justify-content-around">
+            @foreach (var product in Model)
+            {
+                @Html.Partial("_ProductCard", product)
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+    jQuery.fn.sortProducts = function sortDivs(dataAttr, ascending) {
+        $("> .product-card", this[0]).sort(dec_sort).appendTo(this[0]);
+
+        function dec_sort(a, b) { return ($(b).data(dataAttr)) < ($(a).data(dataAttr)) ? ascending : -1 * ascending; }
+    }
+
+    function Sort(value) {
+        if (value === '0')
+            $('#products-container').sortProducts('popularity', -1);
+        else if (value === '1')
+            $('#products-container').sortProducts('price', 1);
+        else if (value === '2')
+            $('#products-container').sortProducts('price', -1);
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $(".add-item-btn").click(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            $id = $(this).data("id");
+            $name = $(this).data("name");
+            $description = $(this).data("description");
+            $price = $(this).data("price");
+            $image = $(this).data("image");
+
+            addOneProduct($id, $name, $description, $price, $image);
+        });
+    });
+</script>

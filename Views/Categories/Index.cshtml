@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Patisserie.Models.Category>
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+<div class="row justify-content-between">
+    <h1 class="col my-4">
+        @ViewBag.Title
+    </h1>
+    @if (Patisserie.Controllers.Utl.IsAdmin(Session))
+    {
+        <span class="col-4 d-flex flex-row-reverse align-items-center">
+            @Html.ActionLink("Create a New Category", "Create", null, new { @class = "btn btn-outline-primary" })
+        </span>
+    }
+</div>
+
+<div class="container">
+    <div class="row justify-content-around">
+        @foreach (var item in Model)
+        {
+            @Html.Partial("_CategoryCard", item)
+        }
+    </div>
+</div>
+
+
+@if (Patisserie.Controllers.Utl.IsAdmin(Session))
+{
+    @Html.Partial("_DeleteModal", null, new ViewDataDictionary { { "title", "name" }, { "category", "Categories" } })
+}

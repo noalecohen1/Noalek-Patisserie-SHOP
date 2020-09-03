@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Patisserie.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<div class="row justify-content-between">
+    <h1 class="col my-4">
+        @ViewBag.Title
+    </h1>
+    @if (Patisserie.Controllers.Utl.IsAdmin(Session))
+    {
+        <span class="col-4 d-flex flex-row-reverse align-items-center">
+            @Html.ActionLink("Create a New Product", "Create", null, new { @class = "btn btn-outline-primary" })
+        </span>
+    }
+</div>
+
+
+<div class="container mb-4 p-0">
+    <h4 class="m-0">Filter products by: </h4>
+    @using (Html.BeginForm("", "Products", FormMethod.Post, new { @class = "form-inline" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchName", "", new { @class = "form-control", placeholder = "Name" })
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("searchCategoryID", (IEnumerable<SelectListItem>)ViewData["Categories"], "Select Category", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.TextBox("SearchMaxPrice", "", new { @class = "form-control", style = "width: 100px;", placeholder = "Max. price" })
+        </div>
+
+        <div class="form-group">
+            @{
+                List<SelectListItem> isDairy = new List<SelectListItem>();
+                isDairy.Add(new SelectListItem
+                {
+                    Text = "Dairy",
+                    Value = "True"
+                });
+                isDairy.Add(new SelectListItem
+                {
+                    Text = "Non-Dairy",
+                    Value = "False",
+                });
+            }
+
+            @Html.DropDownList("SearchIsDairy", isDairy, "Dairy/Non-Dairy", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @{
+                List<SelectListItem> isGlutenFree = new List<SelectListItem>();
+                isGlutenFree.Add(new SelectListItem
+                {
+                    Text = "Gluten-Free",
+                    Value = "True"
+                });
+                isGlutenFree.Add(new SelectListItem
+                {
+                    Text = "Gluten-Containing",
+                    Value = "False",
+                });
+            }
+
+            @Html.DropDownList("SearchIsGlutenFree", isGlutenFree, "Gluten", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @{
+                List<SelectListItem> isVegan = new List<SelectListItem>();
+                isVegan.Add(new SelectListItem
+                {
+                    Text = "Vegan",
+                    Value = "True"
+                });
+                isVegan.Add(new SelectListItem
+                {
+                    Text = "Non-Vegan",
+                    Value = "False",
+                });
+            }
+
+            @Html.DropDownList("SearchIsVegan", isVegan, "Vegan/Non-Vegan", new { @class = "form-control" })
+        </div>
+
+
+        <input class="btn btn-primary ml-2 btn-search-posts" type="submit" value="Search" />
+    }
+
+</div>
+
+<div class="container">
+    <div class="row justify-content-around">
+        @foreach (var item in Model)
+        {
+            @Html.Partial("_ProductCard", item)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+        $(function () {
+            $(".add-item-btn").click(function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                $id = $(this).data("id");
+                $name = $(this).data("name");
+                $description = $(this).data("description");
+                $price = $(this).data("price");
+                $image = $(this).data("image");
+
+                addOneProduct($id, $name, $description, $price, $image);
+            });
+        });
+</script>

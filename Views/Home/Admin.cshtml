@@ -1,0 +1,133 @@
+﻿@{ ViewBag.Title = "Control Panel"; }
+
+<div class="row mt-4">
+    <div class="col-12 col-md-7">
+        <h1>@ViewBag.Title</h1>
+    </div>
+    <div class="col d-flex justify-content-end">
+        <canvas id="canvas" width="270" height="70" class="clock">
+        </canvas>
+    </div>
+</div>
+
+<hr class="accessory" />
+
+
+<!-- Facebook post -->
+<div class="row">
+    <div class="col-md-6 facebook-post">
+        <h3 class="mb-2">Post on our facebook page</h3>
+        <form>
+            <textarea class="form-control mb-3" style="width: 90%; height:100px;" name="text" placeholder="Type your status here!" id="postTxt"></textarea>
+            <button style="width: 90%;" class="btn btn-primary" onclick="postAStatus()">Publish</button>
+        </form>
+    </div>
+
+    <div class="col">
+        <h3 class="mb-2">Search Meals Ideas</h3>
+        <form id="meal-ideas" class="form-row d-flex align-items-center">
+            <input type="text" class="form-control d-inline col-8" id="search" placeholder="Meal name" />
+            <input type="submit" style="margin-left: 1em;" class="btn btn-primary" value="Search" />
+        </form>
+        <div id="result-div"></div>
+    </div>
+</div>
+
+<div class="statistics mt-5">
+    <h3 class="text-center">Statistics</h3>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <h4>Sales per product</h4>
+            <div id="pieChart" class="mt-3"></div>
+        </div>
+        <div class="col">
+            <h4>Sales per month</h4>
+            <div id="barChart"></div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/clock.js"></script>
+
+<script src="~/Scripts/mealsapi.js"></script>
+
+<script type="text/javascript" src="~/Scripts/facebook.js"></script>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '3168101776558854', /*app id changed*/
+            cookie: true,
+            xfbml: true,
+            version: 'v8.0'
+        });
+
+        FB.AppEvents.logPageView();
+    };
+</script>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+@*Pie Chart*@
+<script src="~/Scripts/d3pie.js"></script>
+<script>
+    var pie = new d3pie("pieChart", {
+        "size": {
+            "canvasHeight": 300,
+            "canvasWidth": 500,
+            "pieInnerRadius": "20%",
+            "pieOuterRadius": "100%"
+        },
+        "data": {
+            "smallSegmentGrouping": {
+                "enabled": true
+            },
+            "content": @Html.Raw(Json.Encode((List<object>)ViewBag.ProductsRate))
+        },
+        "labels": {
+            "outer": {
+                "pieDistance": 32
+            },
+            "inner": {
+                "format": "value"
+            },
+            "mainLabel": {
+                "font": "verdana",
+                "fontSize": 12
+            },
+            "percentage": {
+                "color": "#e1e1e1",
+                "font": "verdana",
+                "decimalPlaces": 0
+            },
+            "value": {
+                "color": "#fff6f6",
+                "font": "verdana"
+            },
+            "lines": {
+                "enabled": true,
+                "style": "straight"
+            },
+            "truncation": {
+                "enabled": true
+            }
+        },
+        "tooltips": {
+            "enabled": true,
+            "type": "placeholder",
+            "string": "{label}: {value}, {percentage}%",
+            "styles": {
+                "fontSize": 16
+            }
+        },
+        "effects": {
+            "pullOutSegmentOnClick": {
+                "effect": "linear",
+                "speed": 400,
+                "size": 8
+            }
+        }
+    });
+</script>
+
+<script src="~/Scripts/barchart.js"></script>

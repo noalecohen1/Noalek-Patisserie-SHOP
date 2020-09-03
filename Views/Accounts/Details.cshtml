@@ -1,0 +1,65 @@
+﻿@model Patisserie.Models.Account
+
+@{
+    ViewBag.Title = "Account details";
+}
+<div class="row justify-content-between">
+    <h1 class="my-4">@Html.DisplayFor(model => model.Email)'s Account</h1>
+
+    <span class="col-4 d-flex flex-row-reverse align-items-center">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.AccountID }, new { @class = "btn btn-primary" })
+    </span>
+</div>
+<hr class="accessory" />
+<div class="row">
+    <dl class="col-12 col-md-3 dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+    </dl>
+    <div class="col">
+        <h2>Order History</h2>
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Order date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.OrdersHistory)
+                {
+                <tr>
+                    <th scope="row">@order.OrderNumber</th>
+                    <td>@order.Product.Name</td>
+                    <td>@order.Amount</td>
+                    <td>@order.OrderDate.ToString()</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

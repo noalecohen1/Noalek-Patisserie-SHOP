@@ -1,0 +1,53 @@
+﻿@model Patisserie.Models.Product
+
+<div class="col-12 col-md-4 card promoting-card px-0 product-card" data-price="@Model.Price" data-popularity="@Model.PopularityRate">
+    <a href="/Products/Details/@Model.ProductID">
+        <div class="card-header" style="min-height: 90px;">
+            <h4 class="card-title font-weight-bold mb-2">@Model.Name</h4>
+            <h6>
+                @if (Model.IsDairy)
+                {
+                    <span class="badge badge-pill badge-light">Dairy</span>
+                }
+                @if (Model.IsGlutenFree)
+                {
+                    <span class="badge badge-pill badge-info">Gluten-free</span>
+                }
+                @if (Model.IsVegan)
+                {
+                    <span class="badge badge-pill badge-success">Vegan</span>
+                }
+            </h6>
+        </div>
+
+        <div class="product-show align-self-end">
+            <img class="card-img rounded-0 card-img-bottom product-img" src="@Model.ImagePath" alt="@Model.Name">
+            <h3 class="product-price">
+                <span class="money badge badge-warning text-white">$@Html.DisplayFor(model => model.Price)</span>
+            </h3>
+        </div>
+    </a>
+    @if (Patisserie.Controllers.Utl.IsLoggedIn(Session))
+    {
+        <div class="card-footer">
+            <div class="add">
+                <button type="submit" class="btn btn-success w-100 add-item-btn"
+                        data-id="@Model.ProductID" data-name="@Model.Name"
+                        data-description="@Model.Description" data-price="@Model.Price"
+                        data-image="@Model.ImagePath">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="list-cart-title cart-title">Add to cart</span>
+                </button>
+            </div>
+            @if (Patisserie.Controllers.Utl.IsAdmin(Session))
+            {                        
+                <button type="submit" id="BoostProduct" 
+                        class="btn btn-default w-100 border-info mt-2" 
+                        onclick="boostAProduct('@Model.Name', '@Model.ImagePath')">
+                    <i class="fab fa-facebook"></i>
+                    <span class="list-cart-title">Boost</span>
+                </button>
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,59 @@
+﻿<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="LoginLabel" aria-hidden="true">
+    <div class="modal-dialog login" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="login-title">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="card-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user text-info"></i></span>
+                        </div>
+                        <input type="email" autofocus class="form-control" name="email" placeholder="Email address">
+                    </div>
+                    <span class="help-block"></span>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-lock text-info"></i></span>
+                        </div>
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </div>
+
+                    <div class="alert alert-danger" id="alert-login" role="alert">
+                        Couldn't login with the details provided.
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="login-btn" class="btn btn-lg btn-primary btn-block mt-3" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#alert-login').hide()
+    $('#login-btn').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let email = $('input[name="email"]');
+        let password = $('input[name="password"]');
+        $.post('/Accounts/Login', { email: email.val(), password: password.val() })
+            .done(function () {
+                window.location.href = "/";
+            })
+            .fail(function () {
+                email.val('');
+                password.val('');
+                email.select();
+                $('#alert-login').show();
+            });
+    });
+</script>
