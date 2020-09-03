@@ -2,7 +2,7 @@
 
 ![](HomePage-min.gif)
 
-### Contents
+### Content
 
 - [Description](#description)
 - [How To Use](#How-To-Use)
@@ -23,7 +23,7 @@ Through this project we gained a higher level of understanding in programming we
 - LINQ
 - Razor
 
-##### [Back To The Top](#Contents)
+##### [Back To The Top](#Content)
 ---
 ## How To Use
 
@@ -35,13 +35,13 @@ Through this project we gained a higher level of understanding in programming we
 - Update the database tabels with the queries listed in ```DB-Queries``` file 
 - Build and run the application
 
-##### [Back To The Top](#Contents)
+##### [Back To The Top](#Content)
 ---
 ## Images
 
 <p align="center"> <img src="ControlPanel.png"> </p>
 
-##### [Back To The Top](#Contents)
+##### [Back To The Top](#Content)
 ---
 ## Authors
 
@@ -50,4 +50,4 @@ Through this project we gained a higher level of understanding in programming we
 * **Nikol Arazi** - [LinkedIn](https://www.linkedin.com/in/nikol-arazi-55053a199/)
 * **Noa Cohen** - [LinkedIn](https://www.linkedin.com/in/noalecohen1/)
 
-##### [Back To The Top](#Contents)
+##### [Back To The Top](#Content)
